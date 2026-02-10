@@ -1,0 +1,198 @@
+---
+import { getCollection } from "astro:content";
+
+const siteData = await getCollection("siteCollection");
+const site = siteData[0].data;
+const treatments = await getCollection("treatments");
+
+// Map treatments to enhanced schema format
+const treatmentOffers = treatments.map(treatment => ({
+  "@type": "Offer",
+  "itemOffered": {
+    "@type": "MedicalProcedure",
+    "name": treatment.data.title,
+    "procedureType": treatment.data.procedureType || "http://schema.org/NoninvasiveProcedure",
+    "description": treatment.data.description,
+    // ...(treatment.data.bodyLocation && { "bodyLocation": treatment.data.bodyLocation }),
+    // ...(treatment.data.expectedPrognosis && { "expectedPrognosis": treatment.data.expectedPrognosis }),
+    // ...(treatment.data.preparationRequired && { "preparation": treatment.data.preparationRequired }),
+    // ...(treatment.data.followupRequired && { "followup": treatment.data.followupRequired })
+  },
+  "availability": "https://schema.org/InStock",
+  "priceSpecification": {
+    "@type": "PriceSpecification",
+    "priceCurrency": "INR"
+  },
+  "url": `${site.basepath}/treatments/${treatment.id}`
+}));
+
+// Map addresses dynamically from locations
+const addresses = site.locations?.map(location => {
+  const addressLines = location.address;
+  return {
+    "@type": "PostalAddress",
+    "streetAddress": `${addressLines[1]}, ${addressLines[2]}`,
+    "addressLocality": "Bengaluru",
+    "addressRegion": "Karnataka",
+    "postalCode": addressLines[3].match(/\d{6}/)?.[0] || "",
+    "addressCountry": "India"
+  };
+}) || [];
+
+// Map opening hours from locations
+const openingHours = site.locations?.[0]?.timmings?.map(timing => {
+  const days = timing.title.includes("Monday - Saturday") 
+    ? ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    : ["Sunday"];
+  
+  const [opens, closes] = timing.details.split(" - ").map(time => {
+    const [hour, period] = time.trim().split(/(?=[AP]M)/);
+    const [h, m] = hour.split(":");
+    let hours = parseInt(h);
+    if (period === "PM" && hours !== 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+    return `${hours.toString().padStart(2, '0')}:${m || '00'}`;
+  });
+
+  return {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": days,
+    "opens": opens,
+    "closes": closes
+  };
+}) || [];
+
+// Map employees with enhanced schema
+const employees = site.doctors
+  ?.filter(doctor => doctor?.name)
+  ?.map(doctor => ({
+    "@type": "Person",
+    "name": doctor.name,
+    "jobTitle": doctor.specialization,
+    "description": doctor.qualifications,
+    "knowsAbout": doctor.specialization,
+    "image": {
+      "@type": "ImageObject",
+      "url": `${site.basepath}${doctor.image}`,
+      "caption": `${doctor.name} - ${doctor.specialization}`
+    },
+    "worksFor": {
+      "@type": "MedicalClinic",
+      "name": site.title
+    }
+  })) || [];
+
+// Map reviews dynamically
+const reviews = site.testimonials
+  ?.filter(testimonial => testimonial?.patient && testimonial?.text)
+  ?.map(testimonial => ({
+    "@type": "Review",
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": testimonial.rating.toString(),
+      "bestRating": "5"
+    },
+    "author": {
+      "@type": "Person",
+      "name": testimonial.patient
+    },
+    "reviewBody": testimonial.text
+  })) || [];
+
+// Calculate aggregate rating from actual testimonials
+const calculateAggregateRating = () => {
+  if (!site.testimonials?.length) return null;
+  
+  const totalRating = site.testimonials.reduce((sum, t) => sum + (t.rating || 0), 0);
+  const avgRating = (totalRating / site.testimonials.length).toFixed(1);
+  
+  return {
+    "@type": "AggregateRating",
+    "ratingValue": avgRating,
+    "reviewCount": site.testimonials.length.toString(),
+    "bestRating": "5"
+  };
+};
+
+// Contact points for multiple locations
+const contactPoints = site.locations?.map(location => ({
+  "@type": "ContactPoint",
+  "telephone": location.phones[0],
+  "contactType": "Customer Service",
+  "areaServed": "IN",
+  "availableLanguage": ["English", "Hindi", "Kannada"],
+  "email": location.email
+})) || [];
+
+// Enhanced Schema.org JSON-LD for Medical Business
+const medicalBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "MedicalBusiness",
+  "additionalType": "https://schema.org/MedicalClinic",
+  "name": site.title,
+  "description": site.description,
+  "image": `${site.basepath}${site.ogImageURL}`,
+  "url": site.basepath,
+  "logo": `${site.basepath}${site.ogImageURL}`,
+  "telephone": site.locations?.[0]?.phones?.[0],
+  "email": site.locations?.[0]?.email,
+  "priceRange": "₹₹-₹₹₹",
+  "currenciesAccepted": "INR",
+  "paymentAccepted": "Cash, Credit Card, Insurance, Online Payment, UPI",
+  "address": addresses,
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "12.9047",
+    "longitude": "77.5851"
+  },
+  "hasMap": site.locations?.map(loc => loc.map),
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "12.9047",
+      "longitude": "77.5851"
+    },
+    "geoRadius": "15000"
+  },
+  "openingHoursSpecification": openingHours,
+  "smokingAllowed": false,
+  "isAccessibleForFree": false,
+  "sameAs": site.social_media?.map(social => social.link).filter(Boolean) || [],
+  "contactPoint": contactPoints,
+  "founder": {
+    "@type": "Person",
+    "name": "Dr. Sheela Natraj",
+    "jobTitle": "Founder & Director"
+  },
+  "medicalSpecialty": [
+    "https://schema.org/Dermatology",
+    "https://schema.org/Plastic",
+    "https://schema.org/CosmeticSurgery"
+  ],
+  "availableService": [
+    {
+      "@type": "MedicalTherapy",
+      "name": "Dermatological Consultation",
+      "description": "Expert skin health assessment and treatment planning"
+    },
+    {
+      "@type": "MedicalTherapy", 
+      "name": "Cosmetic Dermatology",
+      "description": "Advanced aesthetic treatments for skin rejuvenation"
+    },
+    {
+      "@type": "MedicalTherapy",
+      "name": "Trichology Services",
+      "description": "Specialized hair and scalp treatments"
+    }
+  ],
+  "makesOffer": treatmentOffers,
+  "knowsAbout": ["Dermatology", "Cosmetic Dermatology", "Trichology"],
+  "employee": employees,
+  "review": reviews,
+  "aggregateRating": calculateAggregateRating()
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(medicalBusinessSchema, null, 2)}></script>

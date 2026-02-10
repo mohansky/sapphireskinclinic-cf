@@ -1,0 +1,63 @@
+---
+import R2Image from "./R2Image.astro";
+import Heading from "./Heading.astro";
+import Paragraph from "./Paragraph.astro";
+import Button from "./Button.astro";
+
+interface Treatment {
+  title: string;
+  description: string;
+  img: string; // Changed from ImageMetadata to string for R2 paths
+  icon: string; // Changed from ImageMetadata to string for R2 paths
+  id: string;
+}
+
+interface Props {
+  treatmentItems: Treatment; // Changed from Treatment[] to Treatment
+}
+
+const { treatmentItems } = Astro.props;
+const { title, description, img, icon, id } = treatmentItems;
+---
+
+<div class="card bg-base-100 shadow-sm">
+  <figure>
+    <R2Image
+      src={img}
+      alt={title}
+      title={title}
+      class="w-full h-auto"
+      width={640}
+      height={480}
+    />
+  </figure>
+  <div class="card-body">
+    <div class="flex justify-between items-center gap-3">
+      <Heading size="lg" fontweight="semibold" fontstyle="point">
+        {title}
+      </Heading>
+      <R2Image
+        src={icon}
+        alt={title}
+        title={title}
+        class="w-6 h-auto"
+        width={240}
+        height={240}
+      />
+    </div>
+    <Paragraph variant="defaulttext" class="line-clamp-3 mb-2"
+      >{description}</Paragraph
+    >
+    <div class="card-actions justify-center">
+      <Button
+        href={"/treatments/" + id}
+        color="primary"
+        variant="soft"
+        title={title}
+        themed
+      >
+        Learn more
+      </Button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+---
+import "photoswipe/style.css";
+import Heading from "./Heading.astro";
+import R2Image from "./R2Image.astro";
+
+interface GalleryImage {
+  src: string;
+  title: string;
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  images: GalleryImage[];
+  galleryId?: string;
+}
+
+const { images, galleryId = "my-gallery" } = Astro.props;
+
+// Get R2_PUBLIC_URL to construct full URLs for PhotoSwipe
+const R2_PUBLIC_URL = import.meta.env.R2_PUBLIC_URL || process.env.R2_PUBLIC_URL;
+
+// Helper to get full R2 URL
+const getFullUrl = (src: string) => {
+  if (src.startsWith("http")) return src;
+  const cleanSrc = src.startsWith("/") ? src.slice(1) : src;
+  return R2_PUBLIC_URL ? `${R2_PUBLIC_URL}/${cleanSrc}` : src;
+};
+---
+
+<div
+  class="pswp-gallery grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))] grid-rows-[masonry]"
+  id={galleryId}
+>
+  {
+    images.map((image, index) => {
+      const fullUrl = getFullUrl(image.src);
+      const width = image.width || 1200;
+      const height = image.height || 800;
+
+      return (
+        <a
+          href={fullUrl}
+          data-pswp-src={fullUrl}
+          data-pswp-width={width}
+          data-pswp-height={height}
+          class="hover:opacity-75 transition-opacity duration-300"
+          data-pswp-alt={image.title}
+          title={image.title}
+        >
+          <figure>
+            <R2Image
+              src={image.src}
+              width={400}
+              height={300}
+              alt={image.title}
+              title={image.title}
+              class="rounded-xl w-full h-auto object-cover"
+            />
+          </figure>
+          {image.title && (
+            <div class="items-center text-center mt-2">
+              <Heading size="xs" fontweight="light" class="capitalize">
+                {image.title}
+              </Heading>
+            </div>
+          )}
+        </a>
+      );
+    })
+  }
+
+  <script is:inline define:vars={{ galleryId }}>
+    import PhotoSwipeLightbox from "photoswipe/lightbox";
+    import PhotoSwipe from "photoswipe";
+
+    // Ensure the script runs after the DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      const lightbox = new PhotoSwipeLightbox({
+        gallery: `#${galleryId}`,
+        children: "a",
+        pswpModule: PhotoSwipe,
+      });
+
+      lightbox.init();
+    });
+  </script>
+</div>

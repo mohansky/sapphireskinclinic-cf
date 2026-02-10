@@ -1,0 +1,55 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Container from "@/components/ui/Container.astro";
+import Heading from "@/components/ui/Heading.astro";
+import SwipeGallery from "@/components/ui/SwipeGallery.astro";
+import { getSlugFromPath } from "@/lib/slug";
+import { getCollection } from "astro:content";
+import EquipmentGallery from "@/components/ui/EquipmentGallery.astro";
+
+const siteData = await getCollection("siteCollection");
+const siteInfo = siteData[0].data;
+const currentSlug = getSlugFromPath(Astro.url);
+const currentHeroPage = siteInfo.heroPage.find(
+  (page) => page.slug === currentSlug
+);
+const heroPage = currentHeroPage || siteInfo.heroPage[0];
+
+// Get gallery data - each gallery is now a separate entry
+const galleries = await getCollection("gallery");
+
+// Find specific galleries by folder name
+const jpNagarGallery = galleries.find((g) => g.data.folder === "clinic-jpnagar");
+const koramangalaGallery = galleries.find((g) => g.data.folder === "clinic-kor");
+---
+
+<Layout>
+  <PageHero hero={heroPage} />
+  <Container>
+    <div class="my-20">
+      {jpNagarGallery && (
+        <>
+          <Heading size="lg" fontweight="black" fontstyle="poppins" class="mb-5">
+            {jpNagarGallery.data.title}
+          </Heading>
+          <SwipeGallery images={jpNagarGallery.data.images} galleryId="gallery-jpnagar" />
+        </>
+      )}
+      {koramangalaGallery && (
+        <>
+          <Heading size="lg" fontweight="black" fontstyle="poppins" class="mt-10 mb-5">
+            {koramangalaGallery.data.title}
+          </Heading>
+          <SwipeGallery images={koramangalaGallery.data.images} galleryId="gallery-kor" />
+        </>
+      )}
+    </div>
+    <div class="my-20">
+      <Heading size="lg" fontweight="black" fontstyle="poppins" class="mb-5"
+        >Some of our equipments</Heading
+      >
+      <EquipmentGallery />
+    </div>
+  </Container>
+</Layout>

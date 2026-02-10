@@ -1,0 +1,70 @@
+---
+import { getCollection } from "astro:content";
+
+const siteData = await getCollection("siteCollection");
+const site = siteData[0].data;
+
+const locationCoordinates = [
+  { lat: "12.9047", lng: "77.5851" }, // JP Nagar
+  { lat: "12.9346", lng: "77.6240" }  // Koramangala
+];
+
+const locationSchemas = site.locations?.map((location, index) => {
+  const addressLines = location.address;
+  
+  const openingHours = location.timmings?.map(timing => {
+    const days = timing.title.includes("Monday - Saturday") 
+      ? ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      : ["Sunday"];
+    
+    const [opens, closes] = timing.details.split(" - ").map(time => {
+      const [hour, period] = time.trim().split(/(?=[AP]M)/);
+      const [h, m] = hour.split(":");
+      let hours = parseInt(h);
+      if (period === "PM" && hours !== 12) hours += 12;
+      if (period === "AM" && hours === 12) hours = 0;
+      return `${hours.toString().padStart(2, '0')}:${m || '00'}`;
+    });
+
+    return {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": days,
+      "opens": opens,
+      "closes": closes
+    };
+  });
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": `${site.title} - ${location.title}`,
+    "description": site.description,
+    "image": `${site.basepath}${site.ogImageURL}`,
+    "telephone": location.phones[0],
+    "email": location.email,
+    "url": site.basepath,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": `${addressLines[1]}, ${addressLines[2]}`,
+      "addressLocality": "Bengaluru",
+      "addressRegion": "Karnataka",
+      "postalCode": addressLines[3].match(/\d{6}/)?.[0],
+      "addressCountry": "India"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": locationCoordinates[index].lat,
+      "longitude": locationCoordinates[index].lng
+    },
+    "hasMap": location.map,
+    "openingHoursSpecification": openingHours,
+    "priceRange": "₹₹-₹₹₹",
+    "currenciesAccepted": "INR",
+    "paymentAccepted": "Cash, Credit Card, Insurance, Online Payment, UPI"
+  };
+});
+---
+
+{locationSchemas?.map((schema) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema, null, 2)}></script>
+))}

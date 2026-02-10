@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import Heading from "./Heading.astro";
+import ListUnordered from "./ListUnordered.astro";
+import ListItem from "./ListItem.astro";
+import R2Image from "./R2Image.astro";
+const siteData = await getCollection("siteCollection");
+const siteInfo = siteData[0].data;
+const equipments = siteInfo.equipments;
+---
+
+{
+  equipments.map((equipment) => (
+    <div class="card lg:card-side bg-base-100 shadow-sm mb-10 bg">
+      <figure>
+        <R2Image
+          src={equipment.image}
+          alt={equipment.title}
+          title={equipment.title}
+          width={600}
+          height={600}
+          class="rounded-xl"
+        />
+      </figure>
+
+      <div class="card-body">
+        <R2Image
+          src={equipment.titleImage}
+          alt={equipment.title}
+          title={equipment.title}
+          width={720}
+          height={240}
+          class="w-full object-fit"
+        />
+        <Heading
+          class="sr-only card-title"
+          size="sm"
+          fontweight="normal"
+          fontstyle="point"
+        >
+          {equipment.title}
+        </Heading>
+        <ListUnordered>
+          {equipment.text.map((text) => (
+            <ListItem class="opacity-50">{text}</ListItem>
+          ))}
+        </ListUnordered>
+      </div>
+    </div>
+  ))
+}

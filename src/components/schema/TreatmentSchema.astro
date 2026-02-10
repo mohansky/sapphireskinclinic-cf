@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  treatment: any;
+}
+
+const { treatment } = Astro.props;
+const siteData = await getCollection("siteCollection");
+const site = siteData[0].data;
+
+const treatmentSchema = {
+  "@context": "https://schema.org",
+  "@type": "MedicalProcedure",
+  "name": treatment.data.title,
+  "description": treatment.data.description,
+  "procedureType": treatment.data.procedureType || "http://schema.org/NoninvasiveProcedure",
+  ...(treatment.data.bodyLocation && { "bodyLocation": treatment.data.bodyLocation }),
+  ...(treatment.data.expectedPrognosis && { "expectedPrognosis": treatment.data.expectedPrognosis }),
+  ...(treatment.data.preparationRequired && { "preparation": treatment.data.preparationRequired }),
+  ...(treatment.data.followupRequired && { "followup": treatment.data.followupRequired }),
+  "performedBy": {
+    "@type": "MedicalClinic",
+    "name": site.title,
+    "url": site.basepath
+  }
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(treatmentSchema, null, 2)}></script>

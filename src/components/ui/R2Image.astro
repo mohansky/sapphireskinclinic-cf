@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  src: string | ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: "lazy" | "eager";
+  decoding?: "async" | "sync" | "auto";
+  fallback?: string;
+  [key: string]: any;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className,
+  loading = "lazy",
+  decoding = "async",
+  fallback = "/placeholder.jpg",
+  ...rest
+} = Astro.props;
+
+// Get R2_PUBLIC_URL from environment variables
+// Try both methods to ensure compatibility
+const R2_PUBLIC_URL = import.meta.env.R2_PUBLIC_URL || process.env.R2_PUBLIC_URL;
+
+// Handle different src types
+let imageSrc: string;
+
+if (typeof src === 'string') {
+  // If src is already a string, use it
+  const cleanSrc = src.startsWith("/") ? src.slice(1) : src;
+  imageSrc = R2_PUBLIC_URL ? `${R2_PUBLIC_URL}/${cleanSrc}` : (src.startsWith("http") ? src : fallback);
+} else if (src && typeof src === 'object' && 'src' in src) {
+  // If src is an ImageMetadata object (from Astro image imports)
+  imageSrc = src.src;
+} else {
+  // Fallback for any other case
+  imageSrc = fallback;
+}
+
+const imageUrl = imageSrc;
+
+// Build props object, only including width/height if they're defined
+const imageProps: any = {
+  src: imageUrl,
+  alt,
+  loading,
+  decoding,
+  ...rest,
+};
+
+if (width) imageProps.width = width;
+if (height) imageProps.height = height;
+if (className) imageProps.class = className;
+---
+
+<Image {...imageProps} />

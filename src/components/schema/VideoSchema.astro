@@ -1,0 +1,18 @@
+---
+import { getCollection } from "astro:content";
+const siteData = await getCollection("siteCollection");
+const site = siteData[0].data;
+
+const videoSchema = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Sapphire Skin & Aesthetics Clinic Tour",
+  "description": site.description,
+  "thumbnailUrl": `${site.basepath}${site.videoposter}`,
+  "uploadDate": "2024-01-01",
+  "contentUrl": `${site.basepath}${site.videosrc}`,
+  "embedUrl": `${site.basepath}${site.videosrc}`
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(videoSchema, null, 2)}></script>

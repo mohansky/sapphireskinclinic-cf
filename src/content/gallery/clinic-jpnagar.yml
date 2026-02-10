@@ -1,0 +1,32 @@
+folder: "clinic-jpnagar"
+title: "Our clinic in JPnagar"
+images:
+  - src: /clinic-jpnagar/interior_2.jpg
+    title: "Interior 2"
+
+  - src: /clinic-jpnagar/interior_3A.jpg
+    title: "Interior 3A"
+
+  - src: /clinic-jpnagar/interior_3B.jpg
+    title: "Interior 3B"
+
+  - src: /clinic-jpnagar/interior_3C.jpg
+    title: "Interior 3C"
+
+  - src: /clinic-jpnagar/interior_4.jpg
+    title: "Interior 4"
+
+  - src: /clinic-jpnagar/interior_5.jpg
+    title: "Interior 5"
+
+  - src: /clinic-jpnagar/interior_6.jpg
+    title: "Interior 6"
+
+  - src: /clinic-jpnagar/interior_7.jpg
+    title: "Interior 7"
+
+  - src: /clinic-jpnagar/interior_11.jpg
+    title: "Interior 11"
+
+  - src: /clinic-jpnagar/interior_12.jpg
+    title: "Interior 12"

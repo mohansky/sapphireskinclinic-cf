@@ -1,0 +1,38 @@
+---
+import R2Image from "../ui/R2Image.astro";
+
+interface BeforeAfter {
+  before?: string;
+  after?: string;
+}
+
+const { before, after } = Astro.props;
+---
+
+{
+  before && (
+    <figure class="diff aspect-video mt-10" tabindex="0">
+      <div class="diff-item-1" role="img" tabindex="0">
+        <R2Image
+          src={before}
+          alt="before treatment"
+          title="before treatment"
+          class="object-contain"
+          width={500}
+          height={500}
+        />
+      </div>
+      <div class="diff-item-2 p-4" role="img">
+        <R2Image
+          src={after}
+          alt="after treatment"
+          title="after treatment"
+          class="object-contain"
+          width={500}
+          height={500}
+        />
+      </div>
+      <div class="diff-resizer" />
+    </figure>
+  )
+}
