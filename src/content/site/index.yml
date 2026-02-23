@@ -120,12 +120,6 @@ site:
       img: /clinic-kor/Reception_Area.jpg
       overlayOpacity: 0.2
 
-  offers:
-    - title:
-      subtitle:
-      image: /offer-1225.jpg
-      offerImg: /offers.jpg
-
   about:
     description: >
       The delicate synergy of science, skill and nature is important to understand and create a healthy and beautiful you. 
@@ -147,21 +141,9 @@ site:
     - Utilizing advanced treatments and technologies
     - Prioritizing patient satisfaction
 
-  # Doctors
-  doctors:
-    - name: Dr. Sheela Natraj
-      qualifications: MBBS, DVD
-      specialization: Founder & Director, Consultant Dermatologist & Cosmetologist
-      image: /doctors/DrSheelaNatraj.jpg 
-
-    - name: Dr Aishwarya Balawat
-      qualifications: MBBS, MD
-      specialization: Consultant Dermatologist
-      image: /doctors/DrAishwaryaBalawat.jpg 
-
   aboutTitle: About Us
   aboutText: >
-      Sapphire Skin and Aesthetics Clinic is a premium skincare destination combining advanced science with luxurious care. The clinic offers personalized treatments in a serene and elegant environment, focusing on bespoke skincare solutions. Their expert team of dermatologists and aesthetic specialists uses medical-grade products and the latest technology to ensure excellent results. From initial consultation to post-treatment care, every detail is carefully designed for a superior experience. Whether clients seek radiant skin, anti-aging therapies, or refined self-care, the clinic provides a sanctuary dedicated to beauty and wellbeing. Sapphire Skin and Aesthetics Clinic truly delivers exceptional care because your skin deserves the best.
+    Sapphire Skin and Aesthetics Clinic is a premium skincare destination combining advanced science with luxurious care. The clinic offers personalized treatments in a serene and elegant environment, focusing on bespoke skincare solutions. Their expert team of dermatologists and aesthetic specialists uses medical-grade products and the latest technology to ensure excellent results. From initial consultation to post-treatment care, every detail is carefully designed for a superior experience. Whether clients seek radiant skin, anti-aging therapies, or refined self-care, the clinic provides a sanctuary dedicated to beauty and wellbeing. Sapphire Skin and Aesthetics Clinic truly delivers exceptional care because your skin deserves the best.
   aboutImage: /clinic-kor/Reception_Waiting_Area_2.jpg
   videosrc: /ssac.mp4
   videoposter: /ssac.jpg
@@ -305,10 +287,11 @@ site:
         - title: Sunday
           details: 11AM - 5:00PM
 
-  footerBookAppointment:
-    title: Book your appointment with us today!
-    btnLink: /contact
-    btnText: Book appointment
+  offers:
+    - title: This Valentines fall in love with your skin.
+      subtitle: Book any service and enjoy 14% off on your next visit.
+      image: /offers.jpg
+      offerImg: /offers.jpg
 
   footerLatestOffers:
     title: Latest Offers
@@ -317,6 +300,11 @@ site:
     offerImg: /offers.jpg
     btnLink: /offers
     btnText: Offers
+
+  footerBookAppointment:
+    title: Book your appointment with us today!
+    btnLink: /contact
+    btnText: Book appointment
 
   # Popular Treatments
   popularTreatments:
@@ -369,5 +357,3 @@ site:
     year: 2024
     text: All rights reserved ©
     footnote: Sapphire Skin & Aesthetics Clinic
-
-

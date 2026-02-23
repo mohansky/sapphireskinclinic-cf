@@ -26,3 +26,7 @@ Thumbs.db
 
 # Claude Code
 .claude/
+
+# Local Guides
+ADWORDS_GUIDE.md
+wrangler.md

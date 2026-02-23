@@ -1,0 +1,103 @@
+---
+interface Props {
+  treatment: {
+    data: {
+      bodyLocation?: string;
+      duration?: string;
+      recovery?: string;
+      sessions?: string;
+      results?: string;
+      suitableFor?: string[];
+      preparationRequired?: string;
+      followupRequired?: string;
+    };
+  };
+}
+
+const { treatment } = Astro.props;
+const { bodyLocation, duration, recovery, sessions, results, suitableFor } = treatment.data;
+
+const hasInfo = bodyLocation || duration || recovery || sessions || results;
+---
+
+{hasInfo && (
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body p-5">
+      <h3 class="card-title text-primary text-lg mb-3">Treatment Overview</h3>
+
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        {bodyLocation && (
+          <div class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <div>
+              <span class="font-semibold block text-base-content/70">Area</span>
+              <span>{bodyLocation}</span>
+            </div>
+          </div>
+        )}
+
+        {duration && (
+          <div class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <span class="font-semibold block text-base-content/70">Duration</span>
+              <span>{duration}</span>
+            </div>
+          </div>
+        )}
+
+        {recovery && (
+          <div class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <div>
+              <span class="font-semibold block text-base-content/70">Recovery</span>
+              <span>{recovery}</span>
+            </div>
+          </div>
+        )}
+
+        {sessions && (
+          <div class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+            <div>
+              <span class="font-semibold block text-base-content/70">Sessions</span>
+              <span>{sessions}</span>
+            </div>
+          </div>
+        )}
+
+        {results && (
+          <div class="flex items-start gap-2 col-span-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+            <div>
+              <span class="font-semibold block text-base-content/70">Results</span>
+              <span>{results}</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {suitableFor && suitableFor.length > 0 && (
+        <div class="mt-4 pt-4 border-t border-base-300">
+          <h4 class="font-semibold text-sm text-base-content/70 mb-2">Ideal For:</h4>
+          <ul class="flex flex-wrap gap-2">
+            {suitableFor.map((item) => (
+              <li class="badge badge-outline badge-sm">{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+)}

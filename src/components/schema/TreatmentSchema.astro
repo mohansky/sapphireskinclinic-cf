@@ -9,22 +9,77 @@ const { treatment } = Astro.props;
 const siteData = await getCollection("siteCollection");
 const site = siteData[0].data;
 
+// Build FAQ schema if treatment has FAQs
+const faqSchema = treatment.data.faq?.length ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": treatment.data.faq.map((item: { question: string; answer: string }) => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+} : null;
+
+// Build MedicalProcedure schema
 const treatmentSchema = {
   "@context": "https://schema.org",
   "@type": "MedicalProcedure",
   "name": treatment.data.title,
   "description": treatment.data.description,
   "procedureType": treatment.data.procedureType || "http://schema.org/NoninvasiveProcedure",
+  "url": `${site.basepath}/treatments/${treatment.id}`,
+  "image": treatment.data.img ? `${site.basepath}${treatment.data.img}` : undefined,
   ...(treatment.data.bodyLocation && { "bodyLocation": treatment.data.bodyLocation }),
-  ...(treatment.data.expectedPrognosis && { "expectedPrognosis": treatment.data.expectedPrognosis }),
+  ...(treatment.data.results && { "expectedPrognosis": treatment.data.results }),
   ...(treatment.data.preparationRequired && { "preparation": treatment.data.preparationRequired }),
   ...(treatment.data.followupRequired && { "followup": treatment.data.followupRequired }),
+  ...(treatment.data.duration && { "howPerformed": `Procedure duration: ${treatment.data.duration}` }),
   "performedBy": {
     "@type": "MedicalClinic",
     "name": site.title,
-    "url": site.basepath
+    "url": site.basepath,
+    "telephone": site.locations?.[0]?.phones?.[0],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Bengaluru",
+      "addressRegion": "Karnataka",
+      "addressCountry": "India"
+    }
   }
+};
+
+// Build BreadcrumbList schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": site.basepath
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Treatments",
+      "item": `${site.basepath}/treatments`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": treatment.data.title,
+      "item": `${site.basepath}/treatments/${treatment.id}`
+    }
+  ]
 };
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(treatmentSchema, null, 2)}></script>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(treatmentSchema, null, 2)}></script>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema, null, 2)}></script>
+{faqSchema && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema, null, 2)}></script>
+)}

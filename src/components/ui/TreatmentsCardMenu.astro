@@ -1,0 +1,84 @@
+---
+import R2Image from "./R2Image.astro";
+import Heading from "./Heading.astro";
+import Paragraph from "./Paragraph.astro";
+import Button from "./Button.astro";
+
+interface Treatment {
+  title: string;
+  description: string;
+  img: string;
+  icon: string;
+  id: string;
+}
+
+interface Props {
+  treatmentItems: Treatment;
+}
+
+const { treatmentItems } = Astro.props;
+const { title, description, img, icon, id } = treatmentItems;
+---
+
+<div class="card bg-base-100 full-image w-full shadow-sm">
+  <figure>
+    <R2Image
+      src={img}
+      alt={title}
+      title={title}
+      class="w-full h-auto"
+      width={160}
+      height={120}
+    />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">{title}</h2>
+  </div>
+</div>
+
+
+
+<style>
+  .full-image {
+    display: grid;
+    > * {
+      grid-column-start: 1;
+      grid-row-start: 1;
+    }
+    > .card-body {
+      position: relative;
+      color: var(--color-neutral-content);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+    :where(figure) {
+      overflow: hidden;
+      border-radius: inherit;
+    }
+    > figure img {
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(60%);
+      transition: filter 0.3s ease;
+    }
+  }
+
+  .full-image:hover > figure img {
+    filter: brightness(90%);
+  }
+
+  .full-image:hover > .card-body {
+    color: oklch(0.71 0.125 81.49); 
+    transform: scale(1.2);
+  }
+
+  .full-image:hover > .card-body  > .card-title {
+    border-radius: 5px;
+    background: oklch(0% 0 0 / 0.6); 
+    padding: 3px 6px;
+  }
+
+</style>

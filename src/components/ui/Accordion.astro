@@ -1,0 +1,95 @@
+---
+import Heading from "./Heading.astro";
+import Paragraph from "./Paragraph.astro";
+
+interface AccordionItem {
+  title: string;
+  content: string;
+}
+
+interface Props {
+  items: AccordionItem[];
+  id?: string; // Unique ID for the accordion container
+  defaultOpen?: number; // Index of item to open by default (-1 for none)
+  class?: string;
+}
+
+const {
+  items,
+  id = `accordion-${Math.random().toString(36).slice(2, 9)}`,
+  defaultOpen = -1,
+  class: className = "",
+} = Astro.props;
+---
+
+<div id={id} class:list={["accordion-container", className]}>
+  {
+    items.map((item, index) => (
+      <div
+        class="collapse collapse-arrow bg-base-100 border-b border-base-300 accordion-item rounded-none"
+        data-index={index}
+      >
+        <input
+          type="checkbox"
+          class="hidden accordion-checkbox"
+          checked={index === defaultOpen}
+        />
+        <div class="collapse-title font-semibold">
+          <Heading size="sm" fontweight="normal" fontstyle="point">
+            {item.title}
+          </Heading>
+        </div>
+        <div class="collapse-content accordion-content">
+          <Paragraph size="sm" class="opacity-80">
+            {item.content}
+          </Paragraph>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  function initAccordions() {
+    document.querySelectorAll(".accordion-container").forEach((accordion) => {
+      // Skip if already initialized
+      if (accordion.hasAttribute("data-initialized")) return;
+      accordion.setAttribute("data-initialized", "true");
+
+      accordion.addEventListener("click", (event) => {
+        // Find the closest .accordion-item from the clicked element
+        const accordionItem = (event.target as Element).closest(
+          ".accordion-item"
+        );
+
+        if (!accordionItem) return;
+
+        // Find the checkbox within this accordion-item
+        const checkbox = accordionItem.querySelector(
+          ".accordion-checkbox"
+        ) as HTMLInputElement;
+
+        if (!checkbox) return;
+
+        // Toggle the clicked checkbox
+        const wasChecked = checkbox.checked;
+
+        // Close all other accordions in this container
+        accordion
+          .querySelectorAll(".accordion-item .accordion-checkbox")
+          .forEach((otherCheckbox) => {
+            (otherCheckbox as HTMLInputElement).checked = false;
+          });
+
+        // Toggle the clicked one (open if it was closed)
+        checkbox.checked = !wasChecked;
+      });
+    });
+  }
+
+  // Initialize on DOM ready
+  document.addEventListener("DOMContentLoaded", initAccordions);
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener("astro:page-load", initAccordions);
+</script>

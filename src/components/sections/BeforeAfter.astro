@@ -11,7 +11,7 @@ const { before, after } = Astro.props;
 
 {
   before && (
-    <figure class="diff aspect-video mt-10" tabindex="0">
+    <figure class="diff rounded-field aspect-video mt-10" tabindex="0">
       <div class="diff-item-1" role="img" tabindex="0">
         <R2Image
           src={before}
@@ -22,7 +22,8 @@ const { before, after } = Astro.props;
           height={500}
         />
       </div>
-      <div class="diff-item-2 p-4" role="img">
+      <div class="diff-item-2 p-4" role="img"></div>
+      <div class="diff-item-2" role="img">
         <R2Image
           src={after}
           alt="after treatment"

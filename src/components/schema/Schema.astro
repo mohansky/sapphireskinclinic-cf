@@ -1,9 +1,11 @@
 ---
+// src/components/schema/Schema.astro
 import { getCollection } from "astro:content";
 
 const siteData = await getCollection("siteCollection");
 const site = siteData[0].data;
 const treatments = await getCollection("treatments");
+const doctors = await getCollection("aboutCollection").then(data => data[0].data.doctors);
 
 // Map treatments to enhanced schema format
 const treatmentOffers = treatments.map(treatment => ({
@@ -13,10 +15,12 @@ const treatmentOffers = treatments.map(treatment => ({
     "name": treatment.data.title,
     "procedureType": treatment.data.procedureType || "http://schema.org/NoninvasiveProcedure",
     "description": treatment.data.description,
-    // ...(treatment.data.bodyLocation && { "bodyLocation": treatment.data.bodyLocation }),
-    // ...(treatment.data.expectedPrognosis && { "expectedPrognosis": treatment.data.expectedPrognosis }),
-    // ...(treatment.data.preparationRequired && { "preparation": treatment.data.preparationRequired }),
-    // ...(treatment.data.followupRequired && { "followup": treatment.data.followupRequired })
+    ...(treatment.data.bodyLocation && { "bodyLocation": treatment.data.bodyLocation }),
+    ...(treatment.data.results && { "expectedPrognosis": treatment.data.results }),
+    ...(treatment.data.preparationRequired && { "preparation": treatment.data.preparationRequired }),
+    ...(treatment.data.followupRequired && { "followup": treatment.data.followupRequired }),
+    ...(treatment.data.duration && { "howPerformed": `Duration: ${treatment.data.duration}` }),
+    ...(treatment.data.recovery && { "recognizingAuthority": `Recovery: ${treatment.data.recovery}` })
   },
   "availability": "https://schema.org/InStock",
   "priceSpecification": {
@@ -63,7 +67,7 @@ const openingHours = site.locations?.[0]?.timmings?.map(timing => {
 }) || [];
 
 // Map employees with enhanced schema
-const employees = site.doctors
+const employees = doctors
   ?.filter(doctor => doctor?.name)
   ?.map(doctor => ({
     "@type": "Person",

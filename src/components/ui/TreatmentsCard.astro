@@ -7,20 +7,20 @@ import Button from "./Button.astro";
 interface Treatment {
   title: string;
   description: string;
-  img: string; // Changed from ImageMetadata to string for R2 paths
-  icon: string; // Changed from ImageMetadata to string for R2 paths
+  img: string;
+  icon: string;
   id: string;
 }
 
 interface Props {
-  treatmentItems: Treatment; // Changed from Treatment[] to Treatment
+  treatmentItems: Treatment;
 }
 
 const { treatmentItems } = Astro.props;
 const { title, description, img, icon, id } = treatmentItems;
 ---
 
-<div class="card bg-base-100 shadow-sm">
+<div class="card bg-base-200/10 shadow-sm">
   <figure>
     <R2Image
       src={img}
@@ -40,19 +40,18 @@ const { title, description, img, icon, id } = treatmentItems;
         src={icon}
         alt={title}
         title={title}
-        class="w-6 h-auto"
-        width={240}
-        height={240}
+        class="w-10 h-auto"
+        width={60}
+        height={60}
       />
     </div>
-    <Paragraph variant="defaulttext" class="line-clamp-3 mb-2"
-      >{description}</Paragraph
-    >
-    <div class="card-actions justify-center">
+    <Paragraph variant="defaulttext" class="line-clamp-3 mb-2">{description}</Paragraph>
+    <div class="card-actions justify-end">
       <Button
         href={"/treatments/" + id}
         color="primary"
         variant="soft"
+        size="sm"
         title={title}
         themed
       >

@@ -1,11 +1,11 @@
 ---
-import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/ui/Container.astro";
 import Heading from "@/components/ui/Heading.astro";
 import { getCollection } from "astro:content";
 import { getSlugFromPath } from "@/lib/slug";
 import PageHero from "@/components/sections/PageHero.astro";
+import R2Image from "@/components/ui/R2Image.astro";
 
 const siteData = await getCollection("siteCollection");
 const siteInfo = siteData[0].data;
@@ -33,7 +33,7 @@ const heroPage = currentHeroPage || siteInfo.heroPage[0];
         offers.map((offer) => (
           <div class="card bg-base-100">
             <figure>
-              <Image
+              <R2Image
                 src={offer.image}
                 alt={offer.title || "Offers"}
                 title={offer.title || "Offers"}
@@ -45,15 +45,11 @@ const heroPage = currentHeroPage || siteInfo.heroPage[0];
             <div class="card-body items-center text-center">
               {offer.title && <Heading>{offer.title}</Heading>}
               {offer.subtitle && 
-                <Heading size="xxs" fontweight="medium" fontstyle="poppins">
+                <Heading size="xs" fontweight="medium" fontstyle="poppins">
                   {offer.subtitle}
                 </Heading>
               
               }
-              {/* <Heading>{offer.title}</Heading>
-              <Heading size="xxs" fontweight="medium" fontstyle="openSans">
-                {offer.subtitle}
-              </Heading> */}
             </div>
           </div>
         ))

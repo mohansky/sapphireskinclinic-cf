@@ -4,7 +4,7 @@ import R2Image from "../ui/R2Image.astro";
 
 interface HeroContent {
   title: string;
-  subtitle?: string;
+  category?: string;
   img: string; // Changed from ImageMetadata to string for R2 paths
   overlayOpacity?: number;
 }
@@ -15,7 +15,7 @@ interface Props {
 
 const {
   title,
-  subtitle,
+  category,
   img,
   overlayOpacity = 0.2,
 } = Astro.props.hero;
@@ -40,27 +40,28 @@ const {
     class="hero-content text-center text-neutral-content absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
   >
     <div class="max-w-7xl">
-      {
-        subtitle && (
-          <Heading
-            size="sm"
-            fontweight="normal"
-            fontstyle="glory"
-            class="text-neutral-content tracking-wide opacity-75 mb-5"
-            variant="sectiontitle"
-            as="h1"
-          >
-            {subtitle}
-          </Heading>
-        )
-      }
       <Heading
+        as="h1"
         size="xxl"
         fontweight="black"
         fontstyle="point"
         variant="sectiontitle"
         class="text-neutral-content text-balance">{title}</Heading
-      >
+        >
+        {
+          category && (
+            <Heading
+              size="sm"
+              fontweight="normal"
+              fontstyle="glory"
+              class="text-neutral-content tracking-wide opacity-75 mb-5"
+              variant="sectiontitle"
+            
+            >
+              {category}
+            </Heading>
+          )
+        }
     </div>
   </div>
 </div>

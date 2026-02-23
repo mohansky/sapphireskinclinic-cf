@@ -111,16 +111,6 @@ const siteCollection = defineCollection({
         text: z.string(),
         footnote: z.string(),
       }),
-      doctors: z.array(
-        z.object({
-          published: z.boolean().optional().default(true),
-          name: z.string(),
-          qualifications: z.string(),
-          specialization: z.string(),
-          image: z.string(),
-          bio: z.string().optional(),
-        }),
-      ),
       faq: z.array(
         z.object({
           question: z.string(),
@@ -200,7 +190,7 @@ const treatmentsCollection = defineCollection({
       draft: z.boolean().optional().default(false),
       type: z.string(),
       weight: z.number(),
-      subtitle: z.string(),
+      category: z.string(),
       description: z.string(),
       icon: z.string(),
       img: z.string(),
@@ -212,6 +202,24 @@ const treatmentsCollection = defineCollection({
           "http://schema.org/PercutaneousProcedure",
         ])
         .default("http://schema.org/PercutaneousProcedure"),
+      // SEO & Schema.org fields
+      bodyLocation: z.string().optional(), // e.g., "Face", "Scalp", "Body"
+      duration: z.string().optional(), // e.g., "30-45 minutes"
+      recovery: z.string().optional(), // e.g., "1-2 days"
+      sessions: z.string().optional(), // e.g., "3-6 sessions"
+      results: z.string().optional(), // e.g., "6-12 months"
+      preparationRequired: z.string().optional(), // Pre-treatment instructions
+      followupRequired: z.string().optional(), // Aftercare instructions
+      suitableFor: z.array(z.string()).optional(), // Ideal candidates
+      contraindications: z.array(z.string()).optional(), // Who shouldn't have this
+      faq: z
+        .array(
+          z.object({
+            question: z.string(),
+            answer: z.string(),
+          })
+        )
+        .optional(),
     }),
 });
 

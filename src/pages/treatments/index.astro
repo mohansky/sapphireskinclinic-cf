@@ -15,23 +15,24 @@ const currentHeroPage = siteInfo.heroPage.find(
 );
 const heroPage = currentHeroPage || siteInfo.heroPage[0];
 const treatments = await getCollection("treatments");
-const sortedTreatments = treatments.sort(
+const sortedTreatments = [...treatments].sort(
   (a, b) => a.data.weight - b.data.weight,
 );
+
 const publishedTreatments = sortedTreatments.filter(
   (treatment) => treatment.data.draft !== true,
 );
 
 const generalTreatments = publishedTreatments.filter(
-  (treatment) => treatment.data.subtitle === "General Dermatology",
+  (treatment) => treatment.data.category === "General Dermatology",
 );
 
 const cosmetologyTreatments = publishedTreatments.filter(
-  (treatment) => treatment.data.subtitle === "Cosmetology",
+  (treatment) => treatment.data.category === "Cosmetology",
 );
 
 const trichologyTreatments = publishedTreatments.filter(
-  (treatment) => treatment.data.subtitle === "Trichology",
+  (treatment) => treatment.data.category === "Trichology",
 );
 ---
 
@@ -48,7 +49,7 @@ const trichologyTreatments = publishedTreatments.filter(
       aria-label="General Dermatology"
       checked="checked"
     />
-    <div class="tab-content bg-base-100 border-base-300 p-6">
+    <div class="tab-content bg-base-100 shadow-sm p-6">
       <div class="my-10">
         <Heading
           size="xl"
@@ -86,7 +87,7 @@ const trichologyTreatments = publishedTreatments.filter(
     </div>
 
     <input type="radio" name="my_tabs_6" class="tab" aria-label="Cosmetology" />
-    <div class="tab-content bg-base-100 border-base-300 p-6">
+    <div class="tab-content bg-base-100 shadow-sm p-6">
       <div class="my-10">
         <Heading
           size="xl"
@@ -124,7 +125,7 @@ const trichologyTreatments = publishedTreatments.filter(
     </div>
 
     <input type="radio" name="my_tabs_6" class="tab" aria-label="Trichology" />
-    <div class="tab-content bg-base-100 border-base-300 p-6">
+    <div class="tab-content bg-base-100 shadow-sm p-6">
       <div class="my-10">
         <Heading
           size="xl"

@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+// src/components/sections/TreatmentsCaro.astro 
 import { getCollection } from "astro:content";
 import Heading from "../ui/Heading.astro";
 import "swiper/css";
@@ -50,12 +50,15 @@ const loopTreatments = [
 
 <script>
   import Swiper from "swiper/bundle";
-  import { Autoplay } from "swiper/modules";
+  import { Autoplay, FreeMode } from "swiper/modules";
   import "swiper/css/bundle";
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function initSwiper() {
+    const swiperEl = document.querySelector(".treatmentsSwiper");
+    if (!swiperEl) return;
+
     const swiper = new Swiper(".treatmentsSwiper", {
-      modules: [Autoplay],
+      modules: [Autoplay, FreeMode],
       // Basic configuration
       slidesPerView: 5,
       spaceBetween: 10,
@@ -86,7 +89,7 @@ const loopTreatments = [
 
       // Autoplay for continuous movement
       autoplay: {
-        delay: 0, // No delay between slides
+        delay: 1, // Small delay for better browser compatibility
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       },
@@ -101,7 +104,11 @@ const loopTreatments = [
       // Performance and interaction
       grabCursor: true,
     });
-  });
+  }
+
+  // Initialize on both initial load and Astro page navigation
+  document.addEventListener("DOMContentLoaded", initSwiper);
+  document.addEventListener("astro:page-load", initSwiper);
 </script>
 
 <style>
