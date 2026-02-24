@@ -14,9 +14,6 @@ importers:
       '@astrojs/mdx':
         specifier: ^4.3.13
         version: 4.3.13(astro@5.17.1(@netlify/blobs@10.4.1)(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3)(yaml@2.8.2))
-      '@astrojs/partytown':
-        specifier: ^2.1.4
-        version: 2.1.4
       '@astrojs/react':
         specifier: 4.4.2
         version: 4.4.2(@types/node@24.10.1)(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(yaml@2.8.2)
@@ -124,9 +121,6 @@ packages:
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
     peerDependencies:
       astro: ^5.0.0
-
-  '@astrojs/partytown@2.1.4':
-    resolution: {integrity: sha512-loUrAu0cGYFDC6dHVRiomdsBJ41VjDYXPA+B3Br51V5hENFgDSOLju86OIj1TvBACcsB22UQV7BlppODDG5gig==}
 
   '@astrojs/prism@3.3.0':
     resolution: {integrity: sha512-q8VwfU/fDZNoDOf+r7jUnMC2//H2l0TuQ6FkGJL8vD8nw/q5KiL3DS1KKBI3QhI9UQhpJ5dc7AtqfbXWuOgLCQ==}
@@ -1177,11 +1171,6 @@ packages:
   '@poppinss/exception@1.2.3':
     resolution: {integrity: sha512-dCED+QRChTVatE9ibtoaxc+WkdzOSjYTKi/+uacHWIsfodVfpsueo3+DKpgU5Px8qXjgmXkSvhXvSCz3fnP9lw==}
 
-  '@qwik.dev/partytown@0.11.2':
-    resolution: {integrity: sha512-795y49CqBiKiwKAD+QBZlzlqEK275hVcazZ7wBPSfgC23L+vWuA7PJmMpgxojOucZHzYi5rAAQ+IP1I3BKVZxw==}
-    engines: {node: '>=18.0.0'}
-    hasBin: true
-
   '@react-email/body@0.0.11':
     resolution: {integrity: sha512-ZSD2SxVSgUjHGrB0Wi+4tu3MEpB4fYSbezsFNEJk2xCWDBkFiOeEsjTmR5dvi+CxTK691hQTQlHv0XWuP7ENTg==}
     peerDependencies:
@@ -1987,10 +1976,6 @@ packages:
   dot-prop@9.0.0:
     resolution: {integrity: sha512-1gxPBJpI/pcjQhKgIU91II6Wkay+dLcN3M6rf2uwP8hRur3HtQXjVrdAK3sjC0piaEuxzMwjXChcETiJl47lAQ==}
     engines: {node: '>=18'}
-
-  dotenv@16.6.1:
-    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
-    engines: {node: '>=12'}
 
   dset@3.1.4:
     resolution: {integrity: sha512-2QF/g9/zTaPDc3BjNcVTGoBbXBgYfMTTceLaYcFJ/W9kggFUkhxD/hMEeuLKbugyef9SqAx8cpgwlIP/jinUTA==}
@@ -3509,11 +3494,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/partytown@2.1.4':
-    dependencies:
-      '@qwik.dev/partytown': 0.11.2
-      mrmime: 2.0.1
-
   '@astrojs/prism@3.3.0':
     dependencies:
       prismjs: 1.30.0
@@ -4372,10 +4352,6 @@ snapshots:
 
   '@poppinss/exception@1.2.3': {}
 
-  '@qwik.dev/partytown@0.11.2':
-    dependencies:
-      dotenv: 16.6.1
-
   '@react-email/body@0.0.11(react@19.2.0)':
     dependencies:
       react: 19.2.0
@@ -5207,8 +5183,6 @@ snapshots:
     dependencies:
       type-fest: 4.41.0
     optional: true
-
-  dotenv@16.6.1: {}
 
   dset@3.1.4: {}
 

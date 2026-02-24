@@ -4,7 +4,7 @@ const gtmId = import.meta.env.GTM;
 
 {gtmId && (
   <Fragment> 
-    <script type="text/partytown" is:inline define:vars={{gtmId}}>
+    <script is:inline define:vars={{gtmId}}>
     (function (w, d, s, l, i) {
       w[l] = w[l] || [];
       w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
