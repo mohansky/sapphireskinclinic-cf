@@ -100,7 +100,7 @@ import DatePicker from "./DatePicker";
           </div>
           <div>
             <label class="label">
-              <span class="label-text mb-3">Preferred Appointment Date</span>
+              <span class="label-text mb-3">Date</span>
             </label>
             <DatePicker
               name="datePreference"
@@ -332,12 +332,19 @@ import DatePicker from "./DatePicker";
       const { data, error } = await actions.contactForm(formData);
 
       if (data) {
+        // Push conversion event to GTM dataLayer
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: "form_submission",
+          form_name: "contact_form",
+        });
+
         form.reset();
         if (toast) {
           toast.style.display = "block";
           setTimeout(() => {
             toast.style.display = "none";
-          }, 3000);
+          }, 8000);
         }
 
         // Reset form field validations
@@ -429,7 +436,7 @@ import DatePicker from "./DatePicker";
     setTimeout(() => {
       errorToast.style.display = "none";
       errorToast.remove();
-    }, 3000);
+    }, 8000);
   }
 
   // Handle fieldsets with "require one" data attribute

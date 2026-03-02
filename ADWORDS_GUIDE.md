@@ -64,7 +64,6 @@ PRP treatment for hair fall
 PRP for skin rejuvenation
 Hydrafacial near me
 Chemical peel treatment
-Botox treatment Bangalore
 Dermal fillers near me
 Hair transplant Bangalore
 HIFU treatment face lift
@@ -98,3 +97,8 @@ Skin and aesthetics clinic
 Skin care clinic Bangalore
 FDA approved laser treatment
 Medical grade skin treatment
+
+
+● Now in Google Tag Manager, set up the conversion:                                                                                           1. Create a Trigger: Type = "Custom Event", Event name =              form_submission                                                     
+  2. Create a Tag: Type = "Google Ads Conversion Tracking", add your    Conversion ID and Label from Google Ads, and set the trigger to the   one you just created                                                                                                                        That's it — every successful form submission will now fire a          conversion event that GTM picks up and sends to Google Ads. No      
+  thank-you page needed.

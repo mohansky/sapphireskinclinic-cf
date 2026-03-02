@@ -21,7 +21,6 @@ site:
     - Chemical peels Koramangala
     - Acne treatment clinic Bangalore
     - Skin rejuvenation JP Nagar
-    - Botox and fillers Koramangala
     - Hydrafacial South Bangalore
     - Medical facials JP Nagar
     - PRP therapy skin Koramangala
@@ -155,7 +154,7 @@ site:
       icon: carbon:airline-passenger-care
 
     - number: "02"
-      title: FDA approved laser equipments
+      title: Clinically tested laser equipment
       icon: carbon:certificate
 
     - number: "03"
@@ -255,7 +254,7 @@ site:
   locations:
     - address:
         - Sapphire Skin & Aesthetics Clinic,
-        - 1st Floor, 24th Main Rd,
+        - "#718 1st Floor, 24th Main Rd,"
         - JP Nagar 6th Phase,
         - Bengaluru, Karnataka 560078
       phones:
@@ -312,8 +311,6 @@ site:
       link: /treatments/diode-laser-hair-removal
     - name: Chemical Peels
       link: /treatments/chemical-peels
-    - name: Botox & Dermal Fillers
-      link: /treatments/botox-and-dermal-fillers
     - name: PRP for Skin
       link: /treatments/prp-for-skin
     - name: Photo Facial
