@@ -18,7 +18,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: "https://sapphireskin-astro.mohansky.workers.dev/",
+  site: "https://sapphireskin.in",
   integrations: [
     icon(),
     mdx(),

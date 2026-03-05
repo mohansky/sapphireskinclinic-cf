@@ -102,3 +102,9 @@ Medical grade skin treatment
 ● Now in Google Tag Manager, set up the conversion:                                                                                           1. Create a Trigger: Type = "Custom Event", Event name =              form_submission                                                     
   2. Create a Tag: Type = "Google Ads Conversion Tracking", add your    Conversion ID and Label from Google Ads, and set the trigger to the   one you just created                                                                                                                        That's it — every successful form submission will now fire a          conversion event that GTM picks up and sends to Google Ads. No      
   thank-you page needed.
+
+
+  <!-- Event snippet for Appointment_Booking conversion page -->
+<script>
+  gtag('event', 'conversion', {'send_to': 'AW-17863069057/Tr90CIWIq4EcEIGb48VC'});
+</script>

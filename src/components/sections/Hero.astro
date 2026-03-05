@@ -15,7 +15,7 @@ const hero = siteInfo.hero;
 <div class="relative">
   <div class="swiper heroSwiper">
     <div class="swiper-wrapper">
-      {hero.map((heroContent) => <HeroSlide hero={heroContent} />)}
+      {hero.map((heroContent, i) => <HeroSlide hero={{...heroContent, isFirstSlide: i === 0}} />)}
     </div>
   </div>
 </div>

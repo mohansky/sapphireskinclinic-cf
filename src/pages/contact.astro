@@ -19,7 +19,7 @@ const currentHeroPage = siteInfo.heroPage.find(
 const heroPage = currentHeroPage || siteInfo.heroPage[0];
 ---
 
-<Layout>
+<Layout title="Contact Us - Sapphire Skin & Aesthetics Clinic" description="Book an appointment at Sapphire Skin & Aesthetics Clinic. Visit us at Koramangala or JP Nagar, Bangalore. Call or fill out our contact form.">
   <PageHero hero={heroPage} />
   <Container>
     <div class="grid lg:grid-cols-2 gap-10 mb-20">
@@ -30,7 +30,7 @@ const heroPage = currentHeroPage || siteInfo.heroPage[0];
     </div>
 
     <div>
-      <Heading size="xxl" fontweight="black" fontstyle="marcellus" class="mb-5">
+      <Heading size="xxl" fontweight="black" fontstyle="poppins" class="mb-5">
         Our Locations
       </Heading>
       <ContactItemsPage locations={site.locations} />

@@ -78,7 +78,9 @@ const breadcrumbs = getBreadcrumbs();
   <body class="overflow-x-hidden">
     <GTMBodyNoScript />
     <Navbar navigation={site.navigation} />
-    <slot />
+    <main>
+      <slot />
+    </main>
     <Footer
       footer={{
         name: site.name,

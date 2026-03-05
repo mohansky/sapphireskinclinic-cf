@@ -40,7 +40,7 @@ if (!entry) {
 const { Content } = await render(entry);
 ---
 
-<Layout>
+<Layout title={`${post.data.title} - Sapphire Skin & Aesthetics Clinic`} description={post.data.description} image={post.data.img}>
   <PageHero hero={post.data} />
   <Container width="marginxy">
     <div class="grid lg:grid-cols-4 gap-10">
