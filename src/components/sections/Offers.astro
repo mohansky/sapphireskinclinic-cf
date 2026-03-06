@@ -3,56 +3,59 @@ import { getCollection } from "astro:content";
 import Heading from "../ui/Heading.astro";
 import Button from "../ui/Button.astro";
 import R2Image from "../ui/R2Image.astro";
+import OffersSlider from "./OffersSlider.astro";
 
 const siteData = await getCollection("siteCollection");
 const siteInfo = siteData[0].data;
-const offers = siteInfo.footerLatestOffers;
+const footerOffers = siteInfo.footerLatestOffers;
+const offers = siteInfo.offers;
 ---
 
 <div class="hero h-[50vh] overflow-hidden">
   <R2Image
-    src={offers.bgImage}
-    alt={offers.title || "Sapphire Skin & Aesthetics Clinic"}
-    title={offers.title || "Sapphire Skin & Aesthetics Clinic"}
+    src={footerOffers.bgImage}
+    alt={footerOffers.title || "Sapphire Skin & Aesthetics Clinic"}
+    title={footerOffers.title || "Sapphire Skin & Aesthetics Clinic"}
     width={1920}
     height={1080}
     class="object-cover h-[50vh] cursor-pointer"
-    
   />
 
   <div class="hero-overlay"></div>
   <div class="hero-content text-center">
     <div class="max-w-xxl px-5 py-2">
-      <!-- {offers.title && <Heading>{offers.title}</Heading>} -->
-      {offers.subtitle && <Heading size="xxl" class="text-neutral-content mb-10" variant="sectiontitle">{offers.subtitle}</Heading>}
-      <!-- <Button href={offers.btnLink} variant="primary" title="Offers" themed>
-        {offers.btnText}
-      </Button> -->
-        <Button onclick="offer_modal.showModal()" variant="primary" title="Offers" themed>
-        {offers.btnText}
+      {footerOffers.subtitle && <Heading size="xxl" class="text-neutral-content mb-10" variant="sectiontitle">{footerOffers.subtitle}</Heading>}
+      <Button onclick="offer_slider_modal.showModal()" variant="primary" title="Offers" themed>
+        {footerOffers.btnText}
       </Button>
     </div>
   </div>
 </div>
 
-<!-- Image Modal Dialog -->
-<dialog id="offer_modal" class="modal">
-  <div class="modal-box max-w-4xl">
+<!-- Offers Modal with Slider -->
+<dialog id="offer_slider_modal" class="modal">
+  <div class="modal-box max-w-4xl max-h-screen p-0">
     <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10">✕</button>
     </form>
-    <R2Image
-      src={offers.offerImg}
-      alt={offers.title || "Sapphire Skin & Aesthetics Clinic"}
-      title={offers.title || "Sapphire Skin & Aesthetics Clinic"}
-      width={1920}
-      height={1080}
-      class="w-full h-auto object-contain"
-    />
-    <!-- {offers.title && <h3 class="font-bold text-lg mt-4">{offers.title}</h3>}
-    {offers.subtitle && <p class="py-4">{offers.subtitle}</p>} -->
+    <div class="overflow-y-auto max-h-screen p-6">
+      <OffersSlider offers={offers} />
+    </div>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
   </form>
 </dialog>
+
+<script>
+  // Auto-popup: show offers modal once per session after 5 seconds
+  if (!sessionStorage.getItem("offerPopupShown")) {
+    setTimeout(() => {
+      const modal = document.getElementById("offer_slider_modal") as HTMLDialogElement;
+      if (modal) {
+        modal.showModal();
+        sessionStorage.setItem("offerPopupShown", "true");
+      }
+    }, 5000);
+  }
+</script>

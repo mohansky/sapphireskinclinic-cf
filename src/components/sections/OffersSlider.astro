@@ -1,0 +1,130 @@
+---
+import Heading from "../ui/Heading.astro";
+import R2Image from "../ui/R2Image.astro";
+
+interface Offer {
+  title?: string | null;
+  subtitle?: string | null;
+  image: string;
+  offerImg: string;
+}
+
+interface Props {
+  offers: Offer[];
+}
+
+const { offers } = Astro.props;
+const isSlider = offers.length > 1;
+---
+
+{isSlider ? (
+  <div class="relative offers-slider-wrap">
+    <div class="swiper offersSwiper">
+      <div class="swiper-wrapper">
+        {offers.map((offer) => (
+          <div class="swiper-slide">
+            <div class="card bg-base-100">
+              <figure>
+                <R2Image
+                  src={offer.offerImg}
+                  alt={offer.title || "Offer"}
+                  title={offer.title || "Offer"}
+                  width={1080}
+                  height={1080}
+                  class="rounded-box w-full h-screen object-contain"
+                />
+              </figure>
+              <div class="card-body items-center text-center">
+                {offer.title && <Heading>{offer.title}</Heading>}
+                {offer.subtitle &&
+                  <Heading size="xs" fontweight="medium" fontstyle="poppins">
+                    {offer.subtitle}
+                  </Heading>
+                }
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+) : (
+  offers.map((offer) => (
+    <div class="card bg-base-100">
+      <figure>
+        <R2Image
+          src={offer.offerImg}
+          alt={offer.title || "Offer"}
+          title={offer.title || "Offer"}
+          width={1080}
+          height={1080}
+          class="rounded-box w-full h-screen object-contain"
+        />
+      </figure>
+      <div class="card-body items-center text-center">
+        {offer.title && <Heading>{offer.title}</Heading>}
+        {offer.subtitle &&
+          <Heading size="xs" fontweight="medium" fontstyle="poppins">
+            {offer.subtitle}
+          </Heading>
+        }
+      </div>
+    </div>
+  ))
+)}
+
+<script>
+  import "swiper/css";
+  import "swiper/css/navigation";
+  import "swiper/css/pagination";
+  import Swiper from "swiper";
+  import { Navigation, Pagination, Autoplay } from "swiper/modules";
+
+  // Init slider if present
+  const swiperEl = document.querySelector(".offersSwiper");
+  if (swiperEl) {
+    new Swiper(".offersSwiper", {
+      modules: [Navigation, Pagination, Autoplay],
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+      loop: true,
+      speed: 600,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      a11y: {
+        enabled: true,
+        prevSlideMessage: "Previous offer",
+        nextSlideMessage: "Next offer",
+      },
+    });
+  }
+</script>
+
+<style>
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: oklch(var(--p));
+    width: 50px;
+    height: 50px;
+    transition: transform 0.2s ease;
+  }
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    transform: scale(1.1);
+  }
+  .swiper-pagination :global(.swiper-pagination-bullet-active) {
+    background: oklch(var(--p));
+  }
+</style>

@@ -287,10 +287,18 @@ site:
           details: 11AM - 5:00PM
 
   offers:
-    - title: This Valentines fall in love with your skin.
-      subtitle: Book any service and enjoy 14% off on your next visit.
-      image: /offers.jpg
-      offerImg: /offers.jpg
+    - title: Your age offer
+      subtitle: This womans day at Sapphire Skin Clinic.
+      image: /offers/offer-060326-1.jpg
+      offerImg: /offers/offer-060326-1.jpg
+    - title: Turn your age into an advantage this womans day.
+      subtitle:
+      image: /offers/offer-060326-2.jpg
+      offerImg: /offers/offer-060326-2.jpg
+    - title: Celebrate yourself with expert care.
+      subtitle:
+      image: /offers/offer-060326-3.jpg
+      offerImg: /offers/offer-060326-3.jpg      
 
   footerLatestOffers:
     title: Latest Offers

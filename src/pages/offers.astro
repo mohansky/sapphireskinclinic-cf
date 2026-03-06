@@ -5,7 +5,7 @@ import Heading from "@/components/ui/Heading.astro";
 import { getCollection } from "astro:content";
 import { getSlugFromPath } from "@/lib/slug";
 import PageHero from "@/components/sections/PageHero.astro";
-import R2Image from "@/components/ui/R2Image.astro";
+import OffersSlider from "@/components/sections/OffersSlider.astro";
 
 const siteData = await getCollection("siteCollection");
 const siteInfo = siteData[0].data;
@@ -29,31 +29,7 @@ const heroPage = currentHeroPage || siteInfo.heroPage[0];
         >Our latest offers
       </Heading>
 
-      {
-        offers.map((offer) => (
-          <div class="card bg-base-100">
-            <figure>
-              <R2Image
-                src={offer.image}
-                alt={offer.title || "Offers"}
-                title={offer.title || "Offers"}
-                width={1080}
-                height={1080}
-                class="rounded-box w-auto h-auto"
-              />
-            </figure>
-            <div class="card-body items-center text-center">
-              {offer.title && <Heading>{offer.title}</Heading>}
-              {offer.subtitle && 
-                <Heading size="xs" fontweight="medium" fontstyle="poppins">
-                  {offer.subtitle}
-                </Heading>
-              
-              }
-            </div>
-          </div>
-        ))
-      }
+      <OffersSlider offers={offers} />
     </div>
   </Container>
 </Layout>
