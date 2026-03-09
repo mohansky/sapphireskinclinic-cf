@@ -20,7 +20,7 @@ const { socials, class: className } = Astro.props;
   {
     socials.map((item) => (
       <li class="group tooltip" data-tip={`Go to ${item.text}`}>
-        <a href={item.link} title={item.text}>
+        <a href={item.link} title={item.text} aria-label={item.text} class="inline-flex items-center justify-center min-w-[48px] min-h-[48px]">
           <Icon
             name={item.icon}
             class={cn("text-primary group-hover:opacity-50 duration-300 ease-in-out", className)}

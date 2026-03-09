@@ -77,7 +77,7 @@ site:
       isFirstSlide: true
       primaryButtonText: Book Appointment
       primaryButtonLink: /contact
-      secondaryButtonText: Learn More
+      secondaryButtonText: Learn More About Us
       secondaryButtonLink: /about
       overlayOpacity: 100
     - title: Radiant Skin Starts Here

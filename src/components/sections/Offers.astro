@@ -2,22 +2,28 @@
 import { getCollection } from "astro:content";
 import Heading from "../ui/Heading.astro";
 import Button from "../ui/Button.astro";
-import R2Image from "../ui/R2Image.astro";
 import OffersSlider from "./OffersSlider.astro";
 
 const siteData = await getCollection("siteCollection");
 const siteInfo = siteData[0].data;
 const footerOffers = siteInfo.footerLatestOffers;
 const offers = siteInfo.offers;
+
+// Direct R2 URL (bypasses /_image proxy)
+const R2_PUBLIC_URL = import.meta.env.R2_PUBLIC_URL || process.env.R2_PUBLIC_URL;
+const bgPath = footerOffers.bgImage?.startsWith("/") ? footerOffers.bgImage.slice(1) : footerOffers.bgImage;
+const bgImageUrl = R2_PUBLIC_URL ? `${R2_PUBLIC_URL}/${bgPath}` : footerOffers.bgImage;
 ---
 
 <div class="hero h-[50vh] overflow-hidden">
-  <R2Image
-    src={footerOffers.bgImage}
+  <img
+    src={bgImageUrl}
     alt={footerOffers.title || "Sapphire Skin & Aesthetics Clinic"}
     title={footerOffers.title || "Sapphire Skin & Aesthetics Clinic"}
-    width={1920}
-    height={1080}
+    width="1920"
+    height="1080"
+    loading="lazy"
+    decoding="async"
     class="object-cover h-[50vh] cursor-pointer"
   />
 

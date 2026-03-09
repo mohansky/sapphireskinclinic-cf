@@ -1,0 +1,151 @@
+---
+interface Props {
+  name: string;
+  id: string;
+  required?: boolean;
+}
+
+const { name, id, required = false } = Astro.props;
+---
+
+<div class="form-control" data-datepicker>
+  <input
+    type="hidden"
+    name={name}
+    id={id}
+    required={required}
+    data-dp-input
+  />
+
+  <button
+    type="button"
+    class="input border-b border-0 input-lg w-full focus:outline-none py-8 rounded-none text-left flex items-center justify-between"
+    data-dp-trigger
+  >
+    <span class="text-base-300" data-dp-display> Select Date </span>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+    </svg>
+  </button>
+
+  <div class="fixed inset-0 z-50 items-center justify-center p-4 bg-black/80 hidden" data-dp-modal>
+    <div class="card bg-base-100 shadow-xl w-full max-w-md">
+      <div class="card-body">
+        <div class="flex items-center justify-between mb-4">
+          <button type="button" class="btn btn-sm btn-ghost btn-circle" data-dp-prev>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+          <h3 class="text-lg font-semibold" data-dp-month-label></h3>
+          <button type="button" class="btn btn-sm btn-ghost btn-circle" data-dp-next>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        </div>
+        <div class="grid grid-cols-7 gap-2 mb-2">
+          <div class="text-center text-sm font-semibold text-base-content opacity-60 p-2">Sun</div>
+          <div class="text-center text-sm font-semibold text-base-content opacity-60 p-2">Mon</div>
+          <div class="text-center text-sm font-semibold text-base-content opacity-60 p-2">Tue</div>
+          <div class="text-center text-sm font-semibold text-base-content opacity-60 p-2">Wed</div>
+          <div class="text-center text-sm font-semibold text-base-content opacity-60 p-2">Thu</div>
+          <div class="text-center text-sm font-semibold text-base-content opacity-60 p-2">Fri</div>
+          <div class="text-center text-sm font-semibold text-base-content opacity-60 p-2">Sat</div>
+        </div>
+        <div class="grid grid-cols-7 gap-2" data-dp-grid></div>
+        <div class="card-actions justify-end mt-4">
+          <button type="button" class="btn btn-sm" data-dp-close>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-datepicker]").forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>("[data-dp-input]")!;
+    const trigger = root.querySelector<HTMLButtonElement>("[data-dp-trigger]")!;
+    const display = root.querySelector<HTMLSpanElement>("[data-dp-display]")!;
+    const modal = root.querySelector<HTMLElement>("[data-dp-modal]")!;
+    const grid = root.querySelector<HTMLElement>("[data-dp-grid]")!;
+    const monthLabel = root.querySelector<HTMLElement>("[data-dp-month-label]")!;
+    const prevBtn = root.querySelector<HTMLButtonElement>("[data-dp-prev]")!;
+    const nextBtn = root.querySelector<HTMLButtonElement>("[data-dp-next]")!;
+    const closeBtn = root.querySelector<HTMLButtonElement>("[data-dp-close]")!;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    let selectedDate = "";
+
+    function formatDisplay(dateStr: string): string {
+      return new Date(dateStr).toLocaleDateString("en-IN", {
+        weekday: "short", year: "numeric", month: "short", day: "numeric",
+      });
+    }
+
+    function render() {
+      const year = currentMonth.getFullYear();
+      const month = currentMonth.getMonth();
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      monthLabel.textContent = currentMonth.toLocaleDateString("en-IN", {
+        month: "long", year: "numeric",
+      });
+
+      // Disable prev if entire prev month is in the past
+      const prevLast = new Date(year, month, 0);
+      prevBtn.disabled = prevLast < today;
+
+      let html = "";
+      for (let i = 0; i < firstDay; i++) html += `<div class="p-2"></div>`;
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const d = new Date(year, month, day);
+        const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const isPast = d < today;
+        const isSelected = selectedDate === dateStr;
+        const isToday = d.getTime() === today.getTime();
+
+        let cls = "btn btn-sm btn-ghost w-full aspect-square p-0 min-h-0 h-auto";
+        if (isSelected) cls += " btn-primary";
+        else if (isToday) cls += " btn-outline";
+        if (isPast) cls += " btn-disabled opacity-30";
+        else cls += " hover:btn-primary hover:btn-outline";
+
+        html += `<button type="button" class="${cls}" ${isPast ? "disabled" : ""} data-date="${dateStr}">${day}</button>`;
+      }
+      grid.innerHTML = html;
+    }
+
+    function open() { modal.classList.remove("hidden"); modal.classList.add("flex"); render(); }
+    function close() { modal.classList.add("hidden"); modal.classList.remove("flex"); }
+
+    trigger.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+    modal.addEventListener("click", (e) => { if (e.target === modal) close(); });
+
+    prevBtn.addEventListener("click", () => {
+      currentMonth.setMonth(currentMonth.getMonth() - 1);
+      render();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentMonth.setMonth(currentMonth.getMonth() + 1);
+      render();
+    });
+
+    grid.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-date]");
+      if (!btn || btn.disabled) return;
+      selectedDate = btn.dataset.date!;
+      input.value = selectedDate;
+      display.textContent = formatDisplay(selectedDate);
+      display.classList.remove("text-base-300");
+      display.classList.add("text-base-content");
+      close();
+    });
+  });
+</script>

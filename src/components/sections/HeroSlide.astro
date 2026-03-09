@@ -1,11 +1,10 @@
 ---
 import Heading from "../ui/Heading.astro";
 import Button from "../ui/Button.astro";
-import R2Image from "../ui/R2Image.astro";
 interface HeroContent {
   title: string;
   subtitle?: string;
-  backgroundImage: string; // Changed from ImageMetadata to string for R2 paths
+  backgroundImage: string;
   overlayOpacity?: number;
   primaryButtonText?: string;
   primaryButtonLink?: string;
@@ -27,24 +26,23 @@ const {
   secondaryButtonLink,
   isFirstSlide = false,
 } = Astro.props.hero;
-const imageSizes = {
-  mobile: 640,
-  tablet: 1024,
-  desktop: 1920,
-};
+
+// Build direct R2 URL (bypasses /_image proxy for faster LCP)
+const R2_PUBLIC_URL = import.meta.env.R2_PUBLIC_URL || process.env.R2_PUBLIC_URL;
+const cleanPath = backgroundImage.startsWith("/") ? backgroundImage.slice(1) : backgroundImage;
+const imageUrl = R2_PUBLIC_URL ? `${R2_PUBLIC_URL}/${cleanPath}` : backgroundImage;
 ---
 
 <div class="swiper-slide hero min-h-screen relative">
-  <R2Image
-    src={backgroundImage}
+  <img
+    src={imageUrl}
     alt={title}
     title={title}
-    width={imageSizes.desktop}
-    height={1080}
+    width="1920"
+    height="1080"
     loading={isFirstSlide ? "eager" : "lazy"}
-    quality={80}
-    densities={[1, 2]}
-    sizes="(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px"
+    fetchpriority={isFirstSlide ? "high" : "low"}
+    decoding={isFirstSlide ? "sync" : "async"}
     class="absolute inset-0 w-full h-full object-cover"
   />
   <div class="hero-overlay opacity-50 absolute inset-0"></div>

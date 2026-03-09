@@ -5,8 +5,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import { Icon } from "astro-icon/components";
-
 const siteData = await getCollection("siteCollection");
 const siteInfo = siteData[0].data;
 const hero = siteInfo.hero;

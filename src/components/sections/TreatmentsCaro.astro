@@ -3,9 +3,6 @@
 import { getCollection } from "astro:content";
 import Heading from "../ui/Heading.astro";
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";
 import R2Image from "../ui/R2Image.astro";
 
 const treatments = await getCollection("treatments");
@@ -16,14 +13,12 @@ const publishedTreatments = sortedTreatments.filter(
   (treatment) => treatment.data.draft !== true
 );
 
-// Create enough duplicates for seamless infinite loop
+// Create duplicates for seamless infinite loop
 const loopTreatments = [
   ...publishedTreatments,
   ...publishedTreatments,
   ...publishedTreatments,
-  ...publishedTreatments,
-  ...publishedTreatments
-]; // 5x duplication ensures smooth looping
+];
 ---
 
 <div class="swiper treatmentsSwiper bg-primary">
@@ -35,8 +30,8 @@ const loopTreatments = [
             src={item.data.icon}
             alt={item.data.title}
             title={item.data.title}
-            width={360}
-            height={360}
+            width={80}
+            height={80}
             class="mx-auto grayscale mb-3 w-10 h-auto z-30"
           />
           <Heading size="xxs" fontweight="light"  class="text-base-100">
@@ -49,9 +44,8 @@ const loopTreatments = [
 </div>
 
 <script>
-  import Swiper from "swiper/bundle";
+  import Swiper from "swiper";
   import { Autoplay, FreeMode } from "swiper/modules";
-  import "swiper/css/bundle";
 
   function initSwiper() {
     const swiperEl = document.querySelector(".treatmentsSwiper");

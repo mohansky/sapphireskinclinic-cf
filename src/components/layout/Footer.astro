@@ -85,7 +85,7 @@ const {
       <Heading>Popular Treatments</Heading>
       {
         popularTreatments.map((treatment) => (
-          <a class="link link-hover font-point text-lg" href={treatment.link} title={treatment.name}>
+          <a class="link link-hover font-point text-lg py-1" href={treatment.link} title={treatment.name}>
             {treatment.name}
           </a>
         ))
@@ -95,7 +95,7 @@ const {
       <Heading>Useful Links</Heading>
       {
         usefulLinks.map((link) => (
-          <a class="link link-hover font-point text-lg" href={link.link} title={link.name}>
+          <a class="link link-hover font-point text-lg py-1" href={link.link} title={link.name}>
             {link.name}
           </a>
         ))

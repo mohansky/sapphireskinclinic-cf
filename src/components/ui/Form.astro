@@ -4,7 +4,7 @@ import Heading from "./Heading.astro";
 import Button from "./Button.astro";
 import LoadingSpinnerIcon from "../icons/LoadingSpinnerIcon.astro";
 import GoogleIcon from "../icons/GoogleIcon.astro";
-import DatePicker from "./DatePicker";
+import DatePicker from "./DatePickerInline.astro";
 ---
 
 <div>
@@ -112,7 +112,6 @@ import DatePicker from "./DatePicker";
               name="datePreference"
               id="datePreference"
               required={true}
-              client:load
             />
             <span
               class="text-error text-sm hidden error-message"

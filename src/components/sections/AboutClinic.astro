@@ -65,11 +65,13 @@ const aboutClinic = aboutInfo.aboutClinic;
 </div>
 
 <script>
-  import Swiper from "swiper/bundle";
-  import "swiper/css/bundle";
+  import Swiper from "swiper";
+  import { Autoplay } from "swiper/modules";
+  import "swiper/css";
 
   document.addEventListener("DOMContentLoaded", () => {
     new Swiper(".aboutClinicSwiper", {
+      modules: [Autoplay],
       slidesPerView: 1,
       spaceBetween: 10,
       breakpoints: {
