@@ -108,3 +108,13 @@ Medical grade skin treatment
 <script>
   gtag('event', 'conversion', {'send_to': 'AW-17863069057/Tr90CIWIq4EcEIGb48VC'});
 </script>
+
+
+
+PRX Plus Biorevitalization
+https://docs.google.com/document/d/1hik6LkQSZ_Cus5q3d6oWmVQ7nu9LoiQ4Wv9SAm_91zg/edit?usp=sharing
+
+
+
+Exosome Therapy
+https://docs.google.com/document/d/1q29YLCHFxU4ZnNNKZUa-kQw7MCUuskQz3KWAEhvdPUo/edit?usp=sharing
